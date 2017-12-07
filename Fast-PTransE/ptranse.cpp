@@ -321,17 +321,18 @@ void* train_ptranse(void *con) {
     }
 }
 
-void init() {
+void init(int entityCount,int relationCount) {
 
     FILE *fin;
     int tmp;
-
-    // fin = fopen((inPath + "relation2id.txt").c_str(), "r");
-    // tmp = fscanf(fin, "%d", &relationTotal);
-    // fclose(fin);
-    relationTotal = 1345;
+    entityTotal = entityCount;
+    printf("Entities:\t%d\n", entityTotal);
+    relationTotal = relationCount;
     printf("Relations:\t%d\n", relationTotal);
-
+     //fin = fopen((inPath + "relation2id.txt").c_str(), "r");
+    // tmp = fscanf(fin, "%d", &relationTotal);
+     //fclose(fin);
+   
     relationTotal <<= 1;
     relationVec = (double *)calloc(relationTotal * dimension, sizeof(double));
     for (int i = 0; i < relationTotal; i++) {
@@ -339,11 +340,10 @@ void init() {
             relationVec[i * dimension + ii] = randn(0, 1.0 / dimension, -6 / sqrt(dimension), 6 / sqrt(dimension));
     }
 
-    // fin = fopen((inPath + "entity2id.txt").c_str(), "r");
-    // tmp = fscanf(fin, "%d", &entityTotal);
-    // fclose(fin);
-    entityTotal = 14951;
-    printf("Entities:\t%d\n", entityTotal);
+     //fin = fopen((inPath + "entity2id.txt").c_str(), "r");
+     //tmp = fscanf(fin, "%d", &entityTotal);
+     //fclose(fin);
+
 
     entityVec = (double *)calloc(entityTotal * dimension, sizeof(double));
     for (int i = 0; i < entityTotal; i++) {
@@ -355,17 +355,17 @@ void init() {
 
     fin = fopen((inPath + "train_pra.txt").c_str(), "r");
     tmp = fscanf(fin, "%d", &tripleTotal);
-    printf("Triples:\t%d\n", tripleTotal);
+    printf("Triples:\t %d\n", tripleTotal);
     trainHead = (Triple **)calloc(tripleTotal, sizeof(Triple*));
     trainTail = (Triple **)calloc(tripleTotal, sizeof(Triple*));
     trainList = (Triple **)calloc(tripleTotal, sizeof(Triple*));
     tripleTotal = 0;
+
     // establish new triple in advance
     trainHead[tripleTotal] = new Triple();
     trainTail[tripleTotal] = new Triple();
     trainList[tripleTotal] = new Triple();
     while (fscanf(fin, "%d", &trainList[tripleTotal]->h) == 1) {
-
         //input (h, t, r)
         tmp = fscanf(fin, "%d", &trainList[tripleTotal]->t);
         tmp = fscanf(fin, "%d", &trainList[tripleTotal]->r);
@@ -483,8 +483,14 @@ void out_ptranse() {
 		fclose(f3);
 }
 
-int main() {
-    init();
+int main(int argc, char**argv) {
+    if(argc!=3) {
+        printf("You must input the number of relations and entities.\n" );
+        return 0;
+    }
+    int entityCount=atoi(argv[1]);
+    int relationCount=atoi(argv[2]);
+    init(entityCount,relationCount);
     train_ptranse(NULL);
     out_ptranse();
     destruct();
