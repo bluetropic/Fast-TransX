@@ -186,7 +186,7 @@ def work(dir):
         e1 = seg[0]
         e2 = seg[1]
         rel = relation2id[seg[2]]
-        g.write(str(ent2id[e1])+" "+ent2id([e2])+' '+str(rel)+"\n")
+        g.write(str(ent2id[e1])+" "+str(ent2id[e2])+' '+str(rel)+"\n")
         b = {}
         a = {}
         if (e1+' '+e2 in h_e_p):
