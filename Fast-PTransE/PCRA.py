@@ -202,7 +202,7 @@ def work(dir):
         for rel_path in a:
             g.write(" "+str(len(rel_path.split()))+" "+rel_path+" "+str(a[rel_path]))
         g.write("\n")
-        g.write(str(e2)+" "+str(e1)+' '+str(rel+relation_num)+"\n")
+        g.write(str(ent2id[e2])+" "+str(ent2id[e1])+' '+str(rel+relation_num)+"\n")
         e1 = seg[1]
         e2 = seg[0]
         b = {}
